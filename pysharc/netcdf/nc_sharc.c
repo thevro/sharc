@@ -129,7 +129,7 @@ reopen_ncoutputdat(int natoms, int nstates, struct sharc_ncoutput* ncdat)
 //     printf("REOPENED!\n");
 
     // init nsteps
-    int nsteps = 0;
+    size_t* nsteps = 0;
 
     int unlim_id = 0;
 
@@ -141,7 +141,7 @@ reopen_ncoutputdat(int natoms, int nstates, struct sharc_ncoutput* ncdat)
             nc_inq_dimlen(ncdat->id, unlim_id, nsteps)
     );
 
-//     printf("found %d steps\n", nsteps);
+//     printf("found %zu steps\n", *nsteps);
     
     check_nccall(iret, 
             nc_inq_varid(ncdat->id, "H_MCH", &ncdat->H_MCH_id)
@@ -261,7 +261,7 @@ write_sharc_ncoutputdat_istep_(
 void
 read_sharc_ncoutputdat_istep_(
         // 
-        int* nsteps,
+        size_t* nsteps,
         const int* istep,
         const int* natoms,
         const int* nstates,
@@ -301,8 +301,8 @@ read_sharc_ncoutputdat_istep_(
         check_nccall(iret,
                 nc_inq_dimlen(ncdat->id, unlim_id, nsteps)
         );
-
-        printf("found %d steps\n", *nsteps);
+        
+        printf("found %zu steps\n", *nsteps);
         
         check_nccall(iret, 
                 nc_inq_varid(ncdat->id, "H_MCH", &ncdat->H_MCH_id)
